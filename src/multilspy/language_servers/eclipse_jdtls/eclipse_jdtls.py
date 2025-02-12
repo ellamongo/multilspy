@@ -159,7 +159,7 @@ class EclipseJDTLS(LanguageServer):
         gradle_path = str(
             PurePath(
                 os.path.abspath(os.path.dirname(__file__)),
-                "static/gradle-7.3.3",
+                "static/gradle-8.5",
             )
         )
 
@@ -198,6 +198,12 @@ class EclipseJDTLS(LanguageServer):
             )
 
         os.chmod(jre_path, stat.S_IEXEC)
+
+        jspawnhelper_path = str(PurePath(jre_home_path, "lib/jspawnhelper"))
+        if os.path.exists(jspawnhelper_path):
+            os.chmod(jspawnhelper_path, stat.S_IEXEC)
+        else:
+            logger.log(f"jspawnhelper not found at {jspawnhelper_path}", logging.INFO)
 
         assert os.path.exists(vscode_java_path)
         assert os.path.exists(jre_home_path)
@@ -283,7 +289,7 @@ class EclipseJDTLS(LanguageServer):
             {"name": "JavaSE-17", "path": "static/vscode-java/extension/jre/17.0.8.1-linux-x86_64", "default": True}
         ]
         d["initializationOptions"]["settings"]["java"]["configuration"]["runtimes"] = [
-            {"name": "JavaSE-17", "path": self.runtime_dependency_paths.jre_home_path}
+            {"name": "JavaSE-21", "path": self.runtime_dependency_paths.jre_home_path}
         ]
 
         for runtime in d["initializationOptions"]["settings"]["java"]["configuration"]["runtimes"]:
