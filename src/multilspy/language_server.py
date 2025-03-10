@@ -687,6 +687,9 @@ class LanguageServer:
             }
         )
 
+        if incoming_call_response is None:
+            return []
+
         return [multilspy_types.CallHierarchyItem(**item["from"]) for item in incoming_call_response]
 
 
