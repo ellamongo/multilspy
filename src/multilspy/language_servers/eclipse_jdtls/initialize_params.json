@@ -469,9 +469,6 @@
         }
     },
     "initializationOptions": {
-        "bundles": [
-            "intellicode-core.jar"
-        ],
         "workspaceFolders": "[pathlib.Path(repository_absolute_path).as_uri()]",
         "settings": {
             "java": {

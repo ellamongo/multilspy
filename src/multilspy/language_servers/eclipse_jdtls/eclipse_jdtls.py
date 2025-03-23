@@ -20,8 +20,6 @@ from multilspy.lsp_protocol_handler.server import ProcessLaunchInfo
 from multilspy.lsp_protocol_handler.lsp_types import InitializeParams
 from multilspy.multilspy_config import MultilspyConfig
 from multilspy.multilspy_settings import MultilspySettings
-from multilspy.multilspy_utils import FileUtils
-from multilspy.multilspy_utils import PlatformUtils
 from pathlib import PurePath
 
 
@@ -37,8 +35,6 @@ class RuntimeDependencyPaths:
     jre_home_path: str
     jdtls_launcher_jar_path: str
     jdtls_readonly_config_path: str
-    intellicode_jar_path: str
-    intellisense_members_path: str
 
 
 class EclipseJDTLS(LanguageServer):
@@ -134,7 +130,6 @@ class EclipseJDTLS(LanguageServer):
         )
 
         self.service_ready_event = asyncio.Event()
-        self.intellicode_enable_command_available = asyncio.Event()
         self.initialize_searcher_command_available = asyncio.Event()
 
         super().__init__(config, logger, repository_root_path, ProcessLaunchInfo(cmd, proc_env, proc_cwd), "java")
@@ -143,59 +138,20 @@ class EclipseJDTLS(LanguageServer):
         """
         Setup runtime dependencies for EclipseJDTLS.
         """
-        platformId = PlatformUtils.get_platform_id()
-
-        with open(str(PurePath(os.path.dirname(__file__), "runtime_dependencies.json")), "r") as f:
-            runtimeDependencies = json.load(f)
-            del runtimeDependencies["_description"]
-
-        os.makedirs(str(PurePath(os.path.abspath(os.path.dirname(__file__)), "static")), exist_ok=True)
-
-        # assert platformId.value in [
-        #     "linux-x64",
-        #     "win-x64",
-        # ], "Only linux-x64 platform is supported for in multilspy at the moment"
-
-        gradle_path = str(
-            PurePath(
-                os.path.abspath(os.path.dirname(__file__)),
-                "static/gradle-8.5",
-            )
-        )
-
-        if not os.path.exists(gradle_path):
-            FileUtils.download_and_extract_archive(
-                logger,
-                runtimeDependencies["gradle"]["platform-agnostic"]["url"],
-                str(PurePath(gradle_path).parent),
-                runtimeDependencies["gradle"]["platform-agnostic"]["archiveType"],
-            )
-
+        gradle_path = config.java_server_config.gradle_path
         assert os.path.exists(gradle_path)
 
-        dependency = runtimeDependencies["vscode-java"][platformId.value]
-        vscode_java_path = str(
-            PurePath(os.path.abspath(os.path.dirname(__file__)), "static", dependency["relative_extraction_path"])
-        )
-        os.makedirs(vscode_java_path, exist_ok=True)
-        jre_home_path = str(PurePath(vscode_java_path, dependency["jre_home_path"]))
-        jre_path = str(PurePath(vscode_java_path, dependency["jre_path"]))
-        lombok_jar_path = str(PurePath(vscode_java_path, dependency["lombok_jar_path"]))
-        jdtls_launcher_jar_path = str(PurePath(vscode_java_path, dependency["jdtls_launcher_jar_path"]))
-        jdtls_readonly_config_path = str(PurePath(vscode_java_path, dependency["jdtls_readonly_config_path"]))
-        if not all(
-            [
-                os.path.exists(vscode_java_path),
-                os.path.exists(jre_home_path),
-                os.path.exists(jre_path),
-                os.path.exists(lombok_jar_path),
-                os.path.exists(jdtls_launcher_jar_path),
-                os.path.exists(jdtls_readonly_config_path),
-            ]
-        ):
-            FileUtils.download_and_extract_archive(
-                logger, dependency["url"], vscode_java_path, dependency["archiveType"]
-            )
+        jre_home_path = config.java_server_config.jre_home_path
+        jre_path = str(PurePath(jre_home_path, "bin/java"))
+        lombok_jar_path = config.java_server_config.lombok_jar_path
+        jdtls_launcher_jar_path = config.java_server_config.jdtls_jar_path
+        jdtls_readonly_config_path = config.java_server_config.jdtls_config_path
+
+        assert os.path.exists(jre_home_path)
+        assert os.path.exists(jre_path)
+        assert os.path.exists(lombok_jar_path)
+        assert os.path.exists(jdtls_launcher_jar_path)
+        assert os.path.exists(jdtls_readonly_config_path)
 
         os.chmod(jre_path, stat.S_IEXEC)
 
@@ -205,35 +161,6 @@ class EclipseJDTLS(LanguageServer):
         else:
             logger.log(f"jspawnhelper not found at {jspawnhelper_path}", logging.INFO)
 
-        assert os.path.exists(vscode_java_path)
-        assert os.path.exists(jre_home_path)
-        assert os.path.exists(jre_path)
-        assert os.path.exists(lombok_jar_path)
-        assert os.path.exists(jdtls_launcher_jar_path)
-        assert os.path.exists(jdtls_readonly_config_path)
-
-        dependency = runtimeDependencies["intellicode"]["platform-agnostic"]
-        intellicode_directory_path = str(
-            PurePath(os.path.abspath(os.path.dirname(__file__)), "static", dependency["relative_extraction_path"])
-        )
-        os.makedirs(intellicode_directory_path, exist_ok=True)
-        intellicode_jar_path = str(PurePath(intellicode_directory_path, dependency["intellicode_jar_path"]))
-        intellisense_members_path = str(PurePath(intellicode_directory_path, dependency["intellisense_members_path"]))
-        if not all(
-            [
-                os.path.exists(intellicode_directory_path),
-                os.path.exists(intellicode_jar_path),
-                os.path.exists(intellisense_members_path),
-            ]
-        ):
-            FileUtils.download_and_extract_archive(
-                logger, dependency["url"], intellicode_directory_path, dependency["archiveType"]
-            )
-
-        assert os.path.exists(intellicode_directory_path)
-        assert os.path.exists(intellicode_jar_path)
-        assert os.path.exists(intellisense_members_path)
-
         return RuntimeDependencyPaths(
             gradle_path=gradle_path,
             lombok_jar_path=lombok_jar_path,
@@ -241,8 +168,6 @@ class EclipseJDTLS(LanguageServer):
             jre_home_path=jre_home_path,
             jdtls_launcher_jar_path=jdtls_launcher_jar_path,
             jdtls_readonly_config_path=jdtls_readonly_config_path,
-            intellicode_jar_path=intellicode_jar_path,
-            intellisense_members_path=intellisense_members_path,
         )
 
     def _get_initialize_params(self, repository_absolute_path: str) -> InitializeParams:
@@ -280,10 +205,6 @@ class EclipseJDTLS(LanguageServer):
                 "name": os.path.basename(repository_absolute_path),
             }
         ]
-
-        assert d["initializationOptions"]["bundles"] == ["intellicode-core.jar"]
-        bundles = [self.runtime_dependency_paths.intellicode_jar_path]
-        d["initializationOptions"]["bundles"] = bundles
 
         assert d["initializationOptions"]["settings"]["java"]["configuration"]["runtimes"] == [
             {"name": "JavaSE-17", "path": "static/vscode-java/extension/jre/17.0.8.1-linux-x86_64", "default": True}
@@ -339,9 +260,6 @@ class EclipseJDTLS(LanguageServer):
                         " ",
                     ]
                     self.completions_available.set()
-                if registration["method"] == "workspace/executeCommand":
-                    if "java.intellicode.enable" in registration["registerOptions"]["commands"]:
-                        self.intellicode_enable_command_available.set()
             return
 
         async def lang_status_handler(params):
@@ -389,18 +307,6 @@ class EclipseJDTLS(LanguageServer):
             self.server.notify.workspace_did_change_configuration(
                 {"settings": initialize_params["initializationOptions"]["settings"]}
             )
-
-            await self.intellicode_enable_command_available.wait()
-
-            java_intellisense_members_path = self.runtime_dependency_paths.intellisense_members_path
-            assert os.path.exists(java_intellisense_members_path)
-            intellicode_enable_result = await self.server.send.execute_command(
-                {
-                    "command": "java.intellicode.enable",
-                    "arguments": [True, java_intellisense_members_path],
-                }
-            )
-            assert intellicode_enable_result
 
             # TODO: Add comments about why we wait here, and how this can be optimized
             await self.service_ready_event.wait()
