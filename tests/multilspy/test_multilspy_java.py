@@ -3,13 +3,21 @@ This file contains tests for running the Java Language Server: Eclipse JDT.LS
 """
 
 import pytest
-from pathlib import PurePath
+from pathlib import PurePath, Path
 from multilspy import LanguageServer
 from multilspy.multilspy_config import Language
 from multilspy.multilspy_types import Position, CompletionItemKind
 from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
+java_server_path = Path(__file__).parent.parent.parent /"src"/ "multilspy" / "language_servers" / "eclipse_jdtls" / "static"
+java_server_config = {"java_server_config": {
+    "jre_home_path": str(PurePath(java_server_path,"vscode-java/extension/jre/21.0.5-macosx-aarch64")),
+    "lombok_jar_path": str(PurePath(java_server_path,"vscode-java/extension/lombok/lombok-1.18.34.jar")),
+    "jdtls_jar_path": str(PurePath(java_server_path,"vscode-java/extension/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar")),
+    "jdtls_config_path": str(PurePath(java_server_path,"vscode-java/extension/server/config_mac_arm")),
+    "gradle_path": str(PurePath(java_server_path,"gradle-8.5"))
+}}
 
 @pytest.mark.asyncio
 async def test_multilspy_java_clickhouse_highlevel_sinker():
@@ -20,7 +28,8 @@ async def test_multilspy_java_clickhouse_highlevel_sinker():
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/Index103000/clickhouse-highlevel-sinker/",
-        "repo_commit": "ee31d278918fe5e64669a6840c4d8fb53889e573"
+        "repo_commit": "ee31d278918fe5e64669a6840c4d8fb53889e573",
+        "java_server_config": java_server_config["java_server_config"]
     }
     with create_test_context(params) as context:
         lsp = LanguageServer.create(context.config, context.logger, context.source_directory)
@@ -152,7 +161,8 @@ async def test_multilspy_java_clickhouse_highlevel_sinker_modified():
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/LakshyAAAgrawal/clickhouse-highlevel-sinker/",
-        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0"
+        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0",
+        "java_server_config": java_server_config["java_server_config"]
     }
     with create_test_context(params) as context:
         lsp = LanguageServer.create(context.config, context.logger, context.source_directory)
@@ -217,6 +227,7 @@ async def test_multilspy_java_example_repo_document_symbols() -> None:
         "code_language": code_language,
         "repo_url": "https://github.com/LakshyAAAgrawal/ExampleRepo/",
         "repo_commit": "f3762fd55a457ff9c6b0bf3b266de2b203a766ab",
+        "java_server_config": java_server_config["java_server_config"]
     }
     with create_test_context(params) as context:
         lsp = LanguageServer.create(context.config, context.logger, context.source_directory)
@@ -355,7 +366,8 @@ async def test_multilspy_java_clickhouse_highlevel_sinker_modified_hover():
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/LakshyAAAgrawal/clickhouse-highlevel-sinker/",
-        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0"
+        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0",
+        "java_server_config": java_server_config["java_server_config"]
     }
 
     with create_test_context(params) as context:
@@ -395,7 +407,8 @@ async def test_multilspy_java_clickhouse_highlevel_sinker_modified_completion_me
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/LakshyAAAgrawal/clickhouse-highlevel-sinker/",
-        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0"
+        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0",
+        "java_server_config": java_server_config["java_server_config"]
     }
 
     with create_test_context(params) as context:
@@ -434,7 +447,8 @@ async def test_multilspy_java_example_repo_prepare_and_incoming_call_hierarchy()
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/LakshyAAAgrawal/clickhouse-highlevel-sinker/",
-        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0"
+        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0",
+        "java_server_config": java_server_config["java_server_config"]
     }
 
     with create_test_context(params) as context:

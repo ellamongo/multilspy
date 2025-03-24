@@ -2,21 +2,33 @@
 This file contains tests for running the Java Language Server: Eclipse JDT.LS
 """
 
-from pathlib import PurePath
+from pathlib import PurePath, Path
 from multilspy import SyncLanguageServer
 from multilspy.multilspy_config import Language
 from tests.test_utils import create_test_context
+
+java_server_path = Path(__file__).parent.parent.parent /"src"/ "multilspy" / "language_servers" / "eclipse_jdtls" / "static"
+java_server_config = {"java_server_config": {
+    "jre_home_path": str(PurePath(java_server_path,"vscode-java/extension/jre/21.0.5-macosx-aarch64")),
+    "lombok_jar_path": str(PurePath(java_server_path,"vscode-java/extension/lombok/lombok-1.18.34.jar")),
+    "jdtls_jar_path": str(PurePath(java_server_path,"vscode-java/extension/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar")),
+    "jdtls_config_path": str(PurePath(java_server_path,"vscode-java/extension/server/config_mac_arm")),
+    "gradle_path": str(PurePath(java_server_path,"gradle-8.5"))
+}}
 
 def test_multilspy_java_clickhouse_highlevel_sinker() -> None:
     """
     Test the working of multilspy with Java repository - clickhouse-highlevel-sinker
     """
     code_language = Language.JAVA
+
     params = {
         "code_language": code_language,
         "repo_url": "https://github.com/Index103000/clickhouse-highlevel-sinker/",
-        "repo_commit": "ee31d278918fe5e64669a6840c4d8fb53889e573"
+        "repo_commit": "ee31d278918fe5e64669a6840c4d8fb53889e573",
+        "java_server_config": java_server_config["java_server_config"]
     }
+
     with create_test_context(params) as context:
         lsp = SyncLanguageServer.create(context.config, context.logger, context.source_directory)
 
