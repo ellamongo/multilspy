@@ -153,13 +153,13 @@ class EclipseJDTLS(LanguageServer):
         assert os.path.exists(jdtls_launcher_jar_path)
         assert os.path.exists(jdtls_readonly_config_path)
 
-        os.chmod(jre_path, stat.S_IEXEC)
+        #os.chmod(jre_path, stat.S_IEXEC)
 
-        jspawnhelper_path = str(PurePath(jre_home_path, "lib/jspawnhelper"))
-        if os.path.exists(jspawnhelper_path):
-            os.chmod(jspawnhelper_path, stat.S_IEXEC)
-        else:
-            logger.log(f"jspawnhelper not found at {jspawnhelper_path}", logging.INFO)
+        #jspawnhelper_path = str(PurePath(jre_home_path, "lib/jspawnhelper"))
+        #if os.path.exists(jspawnhelper_path):
+            #os.chmod(jspawnhelper_path, stat.S_IEXEC)
+        #else:
+            #logger.log(f"jspawnhelper not found at {jspawnhelper_path}", logging.INFO)
 
         return RuntimeDependencyPaths(
             gradle_path=gradle_path,
