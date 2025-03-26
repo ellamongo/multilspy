@@ -26,6 +26,7 @@ class JavaServerConfig:
     Configuration parameters for Java language server
     """
     jre_home_path: str
+    jre_path: str
     jdtls_jar_path: str
     jdtls_config_path: str
     lombok_jar_path: str
