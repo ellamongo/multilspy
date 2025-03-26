@@ -10,6 +10,7 @@ from tests.test_utils import create_test_context
 java_server_path = Path(__file__).parent.parent.parent /"src"/ "multilspy" / "language_servers" / "eclipse_jdtls" / "static"
 java_server_config = {"java_server_config": {
     "jre_home_path": str(PurePath(java_server_path,"vscode-java/extension/jre/21.0.5-macosx-aarch64")),
+    "jre_path": str(PurePath(java_server_path,"vscode-java/extension/jre/21.0.5-macosx-aarch64/bin/java")),
     "lombok_jar_path": str(PurePath(java_server_path,"vscode-java/extension/lombok/lombok-1.18.34.jar")),
     "jdtls_jar_path": str(PurePath(java_server_path,"vscode-java/extension/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar")),
     "jdtls_config_path": str(PurePath(java_server_path,"vscode-java/extension/server/config_mac_arm")),

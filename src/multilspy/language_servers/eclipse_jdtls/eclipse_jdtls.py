@@ -142,7 +142,7 @@ class EclipseJDTLS(LanguageServer):
         assert os.path.exists(gradle_path)
 
         jre_home_path = config.java_server_config.jre_home_path
-        jre_path = str(PurePath(jre_home_path, "bin/java"))
+        jre_path = config.java_server_config.jre_path
         lombok_jar_path = config.java_server_config.lombok_jar_path
         jdtls_launcher_jar_path = config.java_server_config.jdtls_jar_path
         jdtls_readonly_config_path = config.java_server_config.jdtls_config_path
