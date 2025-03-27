@@ -1,4 +1,4 @@
-{
+runtime_dependencies = {
     "_description": "This file lists the runtime dependencies for the Java Language Server",
     "gradle": {
         "platform-agnostic": {

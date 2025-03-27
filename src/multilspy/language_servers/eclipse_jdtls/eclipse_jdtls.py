@@ -3,13 +3,12 @@ Provides Java specific instantiation of the LanguageServer class. Contains vario
 """
 
 import asyncio
+import copy
 import dataclasses
-import json
 import logging
 import os
 import pathlib
 import shutil
-import stat
 import uuid
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
@@ -21,6 +20,8 @@ from multilspy.lsp_protocol_handler.lsp_types import InitializeParams
 from multilspy.multilspy_config import MultilspyConfig
 from multilspy.multilspy_settings import MultilspySettings
 from pathlib import PurePath
+
+from src.multilspy.language_servers.eclipse_jdtls.initialize_params import initialize_parameters
 
 
 @dataclasses.dataclass
@@ -175,9 +176,7 @@ class EclipseJDTLS(LanguageServer):
         Returns the initialize parameters for the EclipseJDTLS server.
         """
         # Look into https://github.com/eclipse/eclipse.jdt.ls/blob/master/org.eclipse.jdt.ls.core/src/org/eclipse/jdt/ls/core/internal/preferences/Preferences.java to understand all the options available
-        with open(str(PurePath(os.path.dirname(__file__), "initialize_params.json")), "r") as f:
-            d: InitializeParams = json.load(f)
-
+        d = copy.deepcopy(initialize_parameters)
         del d["_description"]
 
         if not os.path.isabs(repository_absolute_path):

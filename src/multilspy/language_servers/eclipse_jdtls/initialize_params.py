@@ -1,4 +1,4 @@
-{
+initialize_parameters = {
     "_description": "The parameters sent by the client when initializing the language server with the \"initialize\" request. More details at https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#initialize",
     "processId": "os.getpid()",
     "clientInfo": {
@@ -10,29 +10,29 @@
     "rootUri": "pathlib.Path(repository_absolute_path).as_uri()",
     "capabilities": {
         "workspace": {
-            "applyEdit": true,
+            "applyEdit": True,
             "workspaceEdit": {
-                "documentChanges": true,
+                "documentChanges": True,
                 "resourceOperations": [
                     "create",
                     "rename",
                     "delete"
                 ],
                 "failureHandling": "textOnlyTransactional",
-                "normalizesLineEndings": true,
+                "normalizesLineEndings": True,
                 "changeAnnotationSupport": {
-                    "groupsOnLabel": true
+                    "groupsOnLabel": True
                 }
             },
             "didChangeConfiguration": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "didChangeWatchedFiles": {
-                "dynamicRegistration": true,
-                "relativePatternSupport": true
+                "dynamicRegistration": True,
+                "relativePatternSupport": True
             },
             "symbol": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "symbolKind": {
                     "valueSet": [
                         1,
@@ -75,72 +75,72 @@
                 }
             },
             "codeLens": {
-                "refreshSupport": true
+                "refreshSupport": True
             },
             "executeCommand": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
-            "configuration": true,
-            "workspaceFolders": true,
+            "configuration": True,
+            "workspaceFolders": True,
             "semanticTokens": {
-                "refreshSupport": true
+                "refreshSupport": True
             },
             "fileOperations": {
-                "dynamicRegistration": true,
-                "didCreate": true,
-                "didRename": true,
-                "didDelete": true,
-                "willCreate": true,
-                "willRename": true,
-                "willDelete": true
+                "dynamicRegistration": True,
+                "didCreate": True,
+                "didRename": True,
+                "didDelete": True,
+                "willCreate": True,
+                "willRename": True,
+                "willDelete": True
             },
             "inlineValue": {
-                "refreshSupport": true
+                "refreshSupport": True
             },
             "inlayHint": {
-                "refreshSupport": true
+                "refreshSupport": True
             },
             "diagnostics": {
-                "refreshSupport": true
+                "refreshSupport": True
             }
         },
         "textDocument": {
             "publishDiagnostics": {
-                "relatedInformation": true,
-                "versionSupport": false,
+                "relatedInformation": True,
+                "versionSupport": False,
                 "tagSupport": {
                     "valueSet": [
                         1,
                         2
                     ]
                 },
-                "codeDescriptionSupport": true,
-                "dataSupport": true
+                "codeDescriptionSupport": True,
+                "dataSupport": True
             },
             "synchronization": {
-                "dynamicRegistration": true,
-                "willSave": true,
-                "willSaveWaitUntil": true,
-                "didSave": true
+                "dynamicRegistration": True,
+                "willSave": True,
+                "willSaveWaitUntil": True,
+                "didSave": True
             },
             "completion": {
-                "dynamicRegistration": true,
-                "contextSupport": true,
+                "dynamicRegistration": True,
+                "contextSupport": True,
                 "completionItem": {
-                    "snippetSupport": false,
-                    "commitCharactersSupport": true,
+                    "snippetSupport": False,
+                    "commitCharactersSupport": True,
                     "documentationFormat": [
                         "markdown",
                         "plaintext"
                     ],
-                    "deprecatedSupport": true,
-                    "preselectSupport": true,
+                    "deprecatedSupport": True,
+                    "preselectSupport": True,
                     "tagSupport": {
                         "valueSet": [
                             1
                         ]
                     },
-                    "insertReplaceSupport": false,
+                    "insertReplaceSupport": False,
                     "resolveSupport": {
                         "properties": [
                             "documentation",
@@ -154,7 +154,7 @@
                             2
                         ]
                     },
-                    "labelDetailsSupport": true
+                    "labelDetailsSupport": True
                 },
                 "insertTextMode": 2,
                 "completionItemKind": {
@@ -196,38 +196,38 @@
                 }
             },
             "hover": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "contentFormat": [
                     "markdown",
                     "plaintext"
                 ]
             },
             "signatureHelp": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "signatureInformation": {
                     "documentationFormat": [
                         "markdown",
                         "plaintext"
                     ],
                     "parameterInformation": {
-                        "labelOffsetSupport": true
+                        "labelOffsetSupport": True
                     },
-                    "activeParameterSupport": true
+                    "activeParameterSupport": True
                 },
-                "contextSupport": true
+                "contextSupport": True
             },
             "definition": {
-                "dynamicRegistration": true,
-                "linkSupport": true
+                "dynamicRegistration": True,
+                "linkSupport": True
             },
             "references": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "documentHighlight": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "documentSymbol": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "symbolKind": {
                     "valueSet": [
                         1,
@@ -258,19 +258,19 @@
                         26
                     ]
                 },
-                "hierarchicalDocumentSymbolSupport": true,
+                "hierarchicalDocumentSymbolSupport": True,
                 "tagSupport": {
                     "valueSet": [
                         1
                     ]
                 },
-                "labelSupport": true
+                "labelSupport": True
             },
             "codeAction": {
-                "dynamicRegistration": true,
-                "isPreferredSupport": true,
-                "disabledSupport": true,
-                "dataSupport": true,
+                "dynamicRegistration": True,
+                "isPreferredSupport": True,
+                "disabledSupport": True,
+                "dataSupport": True,
                 "resolveSupport": {
                     "properties": [
                         "edit"
@@ -290,45 +290,45 @@
                         ]
                     }
                 },
-                "honorsChangeAnnotations": false
+                "honorsChangeAnnotations": False
             },
             "codeLens": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "formatting": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "rangeFormatting": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "onTypeFormatting": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "rename": {
-                "dynamicRegistration": true,
-                "prepareSupport": true,
+                "dynamicRegistration": True,
+                "prepareSupport": True,
                 "prepareSupportDefaultBehavior": 1,
-                "honorsChangeAnnotations": true
+                "honorsChangeAnnotations": True
             },
             "documentLink": {
-                "dynamicRegistration": true,
-                "tooltipSupport": true
+                "dynamicRegistration": True,
+                "tooltipSupport": True
             },
             "typeDefinition": {
-                "dynamicRegistration": true,
-                "linkSupport": true
+                "dynamicRegistration": True,
+                "linkSupport": True
             },
             "implementation": {
-                "dynamicRegistration": true,
-                "linkSupport": true
+                "dynamicRegistration": True,
+                "linkSupport": True
             },
             "colorProvider": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "foldingRange": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "rangeLimit": 5000,
-                "lineFoldingOnly": true,
+                "lineFoldingOnly": True,
                 "foldingRangeKind": {
                     "valueSet": [
                         "comment",
@@ -337,21 +337,21 @@
                     ]
                 },
                 "foldingRange": {
-                    "collapsedText": false
+                    "collapsedText": False
                 }
             },
             "declaration": {
-                "dynamicRegistration": true,
-                "linkSupport": true
+                "dynamicRegistration": True,
+                "linkSupport": True
             },
             "selectionRange": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "callHierarchy": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "semanticTokens": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "tokenTypes": [
                     "namespace",
                     "type",
@@ -393,27 +393,27 @@
                     "relative"
                 ],
                 "requests": {
-                    "range": true,
+                    "range": True,
                     "full": {
-                        "delta": true
+                        "delta": True
                     }
                 },
-                "multilineTokenSupport": false,
-                "overlappingTokenSupport": false,
-                "serverCancelSupport": true,
-                "augmentsSyntaxTokens": true
+                "multilineTokenSupport": False,
+                "overlappingTokenSupport": False,
+                "serverCancelSupport": True,
+                "augmentsSyntaxTokens": True
             },
             "linkedEditingRange": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "typeHierarchy": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "inlineValue": {
-                "dynamicRegistration": true
+                "dynamicRegistration": True
             },
             "inlayHint": {
-                "dynamicRegistration": true,
+                "dynamicRegistration": True,
                 "resolveSupport": {
                     "properties": [
                         "tooltip",
@@ -425,24 +425,24 @@
                 }
             },
             "diagnostic": {
-                "dynamicRegistration": true,
-                "relatedDocumentSupport": false
+                "dynamicRegistration": True,
+                "relatedDocumentSupport": False
             }
         },
         "window": {
             "showMessage": {
                 "messageActionItem": {
-                    "additionalPropertiesSupport": true
+                    "additionalPropertiesSupport": True
                 }
             },
             "showDocument": {
-                "support": true
+                "support": True
             },
-            "workDoneProgress": true
+            "workDoneProgress": True
         },
         "general": {
             "staleRequestSupport": {
-                "cancel": true,
+                "cancel": True,
                 "retryOnContentModified": [
                     "textDocument/semanticTokens/full",
                     "textDocument/semanticTokens/range",
@@ -463,8 +463,8 @@
         },
         "notebookDocument": {
             "synchronization": {
-                "dynamicRegistration": true,
-                "executionSummarySupport": true
+                "dynamicRegistration": True,
+                "executionSummarySupport": True
             }
         }
     },
@@ -472,21 +472,21 @@
         "workspaceFolders": "[pathlib.Path(repository_absolute_path).as_uri()]",
         "settings": {
             "java": {
-                "home": null,
+                "home": None,
                 "jdt": {
                     "ls": {
                         "java": {
-                            "home": null
+                            "home": None
                         },
-                        "vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -Xlog:disable",
+                        "vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=True -Xmx1G -Xms100m -Xlog:disable",
                         "lombokSupport": {
-                            "enabled": true
+                            "enabled": True
                         },
                         "protobufSupport": {
-                            "enabled": true
+                            "enabled": True
                         },
                         "androidSupport": {
-                            "enabled": true
+                            "enabled": True
                         }
                     }
                 },
@@ -496,11 +496,11 @@
                     }
                 },
                 "configuration": {
-                    "checkProjectSettingsExclusions": false,
+                    "checkProjectSettingsExclusions": False,
                     "updateBuildConfiguration": "interactive",
                     "maven": {
-                        "userSettings": null,
-                        "globalSettings": null,
+                        "userSettings": None,
+                        "globalSettings": None,
                         "notCoveredPluginExecutionSeverity": "warning",
                         "defaultMojoExecutionAction": "ignore"
                     },
@@ -509,7 +509,7 @@
                         {
                             "name": "JavaSE-17",
                             "path": "static/vscode-java/extension/jre/17.0.8.1-linux-x86_64",
-                            "default": true
+                            "default": True
                         }
                     ]
                 },
@@ -518,32 +518,32 @@
                 },
                 "import": {
                     "maven": {
-                        "enabled": true,
+                        "enabled": True,
                         "offline": {
-                            "enabled": false
+                            "enabled": False
                         },
-                        "disableTestClasspathFlag": false
+                        "disableTestClasspathFlag": False
                     },
                     "gradle": {
-                        "enabled": true,
+                        "enabled": True,
                         "wrapper": {
-                            "enabled": true
+                            "enabled": True
                         },
-                        "version": null,
+                        "version": None,
                         "home": "abs(static/gradle-7.3.3)",
                         "java": {
                             "home": "abs(static/launch_jres/17.0.6-linux-x86_64)"
                         },
                         "offline": {
-                            "enabled": false
+                            "enabled": False
                         },
-                        "arguments": null,
-                        "jvmArguments": null,
+                        "arguments": None,
+                        "jvmArguments": None,
                         "user": {
-                            "home": null
+                            "home": None
                         },
                         "annotationProcessing": {
-                            "enabled": true
+                            "enabled": True
                         }
                     },
                     "exclusions": [
@@ -552,51 +552,51 @@
                         "**/archetype-resources/**",
                         "**/META-INF/maven/**"
                     ],
-                    "generatesMetadataFilesAtProjectRoot": false
+                    "generatesMetadataFilesAtProjectRoot": False
                 },
                 "maven": {
-                    "downloadSources": true,
-                    "updateSnapshots": true
+                    "downloadSources": True,
+                    "updateSnapshots": True
                 },
                 "eclipse": {
-                    "downloadSources": true
+                    "downloadSources": True
                 },
                 "referencesCodeLens": {
-                    "enabled": true
+                    "enabled": True
                 },
                 "signatureHelp": {
-                    "enabled": true,
+                    "enabled": True,
                     "description": {
-                        "enabled": true
+                        "enabled": True
                     }
                 },
                 "implementationsCodeLens": {
-                    "enabled": true
+                    "enabled": True
                 },
                 "format": {
-                    "enabled": true,
+                    "enabled": True,
                     "settings": {
-                        "url": null,
-                        "profile": null
+                        "url": None,
+                        "profile": None
                     },
                     "comments": {
-                        "enabled": true
+                        "enabled": True
                     },
                     "onType": {
-                        "enabled": true
+                        "enabled": True
                     },
-                    "insertSpaces": true,
+                    "insertSpaces": True,
                     "tabSize": 4
                 },
                 "saveActions": {
-                    "organizeImports": false
+                    "organizeImports": False
                 },
                 "project": {
                     "referencedLibraries": [
                         "lib/**/*.jar"
                     ],
                     "importOnFirstTimeStartup": "automatic",
-                    "importHint": true,
+                    "importHint": True,
                     "resourceFilters": [
                         "node_modules",
                         "\\.git"
@@ -607,23 +607,23 @@
                     }
                 },
                 "contentProvider": {
-                    "preferred": null
+                    "preferred": None
                 },
                 "autobuild": {
-                    "enabled": true
+                    "enabled": True
                 },
                 "maxConcurrentBuilds": 1,
                 "recommendations": {
                     "dependency": {
                         "analytics": {
-                            "show": true
+                            "show": True
                         }
                     }
                 },
                 "completion": {
                     "maxResults": 0,
-                    "enabled": true,
-                    "guessMethodArguments": true,
+                    "enabled": True,
+                    "guessMethodArguments": True,
                     "favoriteStaticMembers": [
                         "org.junit.Assert.*",
                         "org.junit.Assume.*",
@@ -652,34 +652,34 @@
                         ""
                     ],
                     "postfix": {
-                        "enabled": false
+                        "enabled": False
                     },
                     "matchCase": "off"
                 },
                 "foldingRange": {
-                    "enabled": true
+                    "enabled": True
                 },
                 "progressReports": {
-                    "enabled": false
+                    "enabled": False
                 },
                 "codeGeneration": {
                     "hashCodeEquals": {
-                        "useJava7Objects": false,
-                        "useInstanceof": false
+                        "useJava7Objects": False,
+                        "useInstanceof": False
                     },
-                    "useBlocks": false,
-                    "generateComments": false,
+                    "useBlocks": False,
+                    "generateComments": False,
                     "toString": {
                         "template": "${object.className} [${member.name()}=${member.value}, ${otherMembers}]",
                         "codeStyle": "STRING_CONCATENATION",
-                        "skipNullValues": false,
-                        "listArrayContents": true,
+                        "skipNullValues": False,
+                        "listArrayContents": True,
                         "limitElements": 0
                     },
                     "insertionLocation": "afterCursor"
                 },
                 "selectionRange": {
-                    "enabled": true
+                    "enabled": True
                 },
                 "showBuildStatusOnStart": {
                     "enabled": "notification"
@@ -705,17 +705,17 @@
                     "typeComment": []
                 },
                 "references": {
-                    "includeAccessors": true,
-                    "includeDecompiledSources": true
+                    "includeAccessors": True,
+                    "includeDecompiledSources": True
                 },
                 "typeHierarchy": {
-                    "lazyLoad": false
+                    "lazyLoad": False
                 },
                 "settings": {
-                    "url": null
+                    "url": None
                 },
                 "symbols": {
-                    "includeSourceMethodDeclarations": false
+                    "includeSourceMethodDeclarations": False
                 },
                 "quickfix": {
                     "showAt": "line"
@@ -728,7 +728,7 @@
                 },
                 "codeAction": {
                     "sortMembers": {
-                        "avoidVolatileChanges": true
+                        "avoidVolatileChanges": True
                     }
                 },
                 "compile": {
@@ -756,33 +756,33 @@
                 "refactoring": {
                     "extract": {
                         "interface": {
-                            "replace": true
+                            "replace": True
                         }
                     }
                 },
                 "debug": {
                     "logLevel": "verbose",
                     "settings": {
-                        "showHex": false,
-                        "showStaticVariables": false,
-                        "showQualifiedNames": false,
-                        "showLogicalStructure": true,
-                        "showToString": true,
+                        "showHex": False,
+                        "showStaticVariables": False,
+                        "showQualifiedNames": False,
+                        "showLogicalStructure": True,
+                        "showToString": True,
                         "maxStringLength": 0,
                         "numericPrecision": 0,
                         "hotCodeReplace": "manual",
-                        "enableRunDebugCodeLens": true,
-                        "forceBuildBeforeLaunch": true,
-                        "onBuildFailureProceed": false,
+                        "enableRunDebugCodeLens": True,
+                        "forceBuildBeforeLaunch": True,
+                        "onBuildFailureProceed": False,
                         "console": "integratedTerminal",
                         "exceptionBreakpoint": {
                             "skipClasses": []
                         },
                         "stepping": {
                             "skipClasses": [],
-                            "skipSynthetics": false,
-                            "skipStaticInitializers": false,
-                            "skipConstructors": false
+                            "skipSynthetics": False,
+                            "skipStaticInitializers": False,
+                            "skipConstructors": False
                         },
                         "jdwp": {
                             "limitOfVariablesPerJdwpRequest": 100,
@@ -792,18 +792,18 @@
                         "vmArgs": ""
                     }
                 },
-                "silentNotification": false,
+                "silentNotification": False,
                 "dependency": {
-                    "showMembers": false,
-                    "syncWithFolderExplorer": true,
-                    "autoRefresh": true,
+                    "showMembers": False,
+                    "syncWithFolderExplorer": True,
+                    "autoRefresh": True,
                     "refreshDelay": 2000,
                     "packagePresentation": "flat"
                 },
                 "help": {
                     "firstView": "auto",
-                    "showReleaseNotes": true,
-                    "collectErrorLog": false
+                    "showReleaseNotes": True,
+                    "collectErrorLog": False
                 },
                 "test": {
                     "defaultConfig": "",
@@ -812,32 +812,32 @@
             }
         },
         "extendedClientCapabilities": {
-            "progressReportProvider": false,
-            "classFileContentsSupport": true,
-            "overrideMethodsPromptSupport": true,
-            "hashCodeEqualsPromptSupport": true,
-            "advancedOrganizeImportsSupport": true,
-            "generateToStringPromptSupport": true,
-            "advancedGenerateAccessorsSupport": true,
-            "generateConstructorsPromptSupport": true,
-            "generateDelegateMethodsPromptSupport": true,
-            "advancedExtractRefactoringSupport": true,
+            "progressReportProvider": False,
+            "classFileContentsSupport": True,
+            "overrideMethodsPromptSupport": True,
+            "hashCodeEqualsPromptSupport": True,
+            "advancedOrganizeImportsSupport": True,
+            "generateToStringPromptSupport": True,
+            "advancedGenerateAccessorsSupport": True,
+            "generateConstructorsPromptSupport": True,
+            "generateDelegateMethodsPromptSupport": True,
+            "advancedExtractRefactoringSupport": True,
             "inferSelectionSupport": [
                 "extractMethod",
                 "extractVariable",
                 "extractField"
             ],
-            "moveRefactoringSupport": true,
-            "clientHoverProvider": true,
-            "clientDocumentSymbolProvider": true,
-            "gradleChecksumWrapperPromptSupport": true,
-            "resolveAdditionalTextEditsSupport": true,
-            "advancedIntroduceParameterRefactoringSupport": true,
-            "actionableRuntimeNotificationSupport": true,
-            "shouldLanguageServerExitOnShutdown": true,
+            "moveRefactoringSupport": True,
+            "clientHoverProvider": True,
+            "clientDocumentSymbolProvider": True,
+            "gradleChecksumWrapperPromptSupport": True,
+            "resolveAdditionalTextEditsSupport": True,
+            "advancedIntroduceParameterRefactoringSupport": True,
+            "actionableRuntimeNotificationSupport": True,
+            "shouldLanguageServerExitOnShutdown": True,
             "onCompletionItemSelectedCommand": "editor.action.triggerParameterHints",
-            "extractInterfaceSupport": true,
-            "advancedUpgradeGradleSupport": true
+            "extractInterfaceSupport": True,
+            "advancedUpgradeGradleSupport": True
         },
         "triggerFiles": []
     },
