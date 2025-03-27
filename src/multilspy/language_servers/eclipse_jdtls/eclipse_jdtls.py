@@ -21,7 +21,7 @@ from multilspy.multilspy_config import MultilspyConfig
 from multilspy.multilspy_settings import MultilspySettings
 from pathlib import PurePath
 
-from src.multilspy.language_servers.eclipse_jdtls.initialize_params import initialize_parameters
+from multilspy.language_servers.eclipse_jdtls.initialize_params import initialize_parameters
 
 
 @dataclasses.dataclass
