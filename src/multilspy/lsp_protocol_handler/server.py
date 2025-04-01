@@ -189,11 +189,13 @@ class LanguageServerHandler:
 
         self.request_id = 1
         self._response_handlers: Dict[Any, Request] = {}
+        self._response_handlers_lock = asyncio.Lock()
         self.on_request_handlers = {}
         self.on_notification_handlers = {}
         self.logger = logger
         self.tasks = {}
         self.task_counter = 0
+        self._task_lock = asyncio.Lock()
         self.loop = None
 
     async def start(self) -> None:
@@ -213,15 +215,17 @@ class LanguageServerHandler:
         )
 
         self.loop = asyncio.get_event_loop()
-        self.tasks[self.task_counter] = self.loop.create_task(self.run_forever())
-        self.task_counter += 1
-        self.tasks[self.task_counter] = self.loop.create_task(self.run_forever_stderr())
-        self.task_counter += 1
+        await self._create_task(self.run_forever())
+        await self._create_task(self.run_forever_stderr())
 
     async def stop(self) -> None:
         """
         Sends the terminate signal to the language server process and waits for it to exit, with a timeout, killing it if necessary
         """
+        if not self.process:
+            return
+
+        # Cancel all tasks
         for task in self.tasks.values():
             task.cancel()
 
@@ -248,11 +252,22 @@ class LanguageServerHandler:
         await self.send.shutdown()
         self._received_shutdown = True
         self.notify.exit()
+        
         if self.process and self.process.stdout:
             self.process.stdout.set_exception(StopLoopException())
             # This yields the control to the event loop to allow the exception to be handled
             # in the run_forever and run_forever_stderr methods
             await asyncio.sleep(0)
+
+    async def _create_task(self, coro) -> int:
+        """
+        Create a new task with a synchronized task ID
+        """
+        async with self._task_lock:
+            task_id = self.task_counter
+            self.task_counter += 1
+            self.tasks[task_id] = asyncio.get_event_loop().create_task(coro)
+            return task_id
 
     def _log(self, message: str) -> None:
         """
@@ -267,24 +282,29 @@ class LanguageServerHandler:
         invoking the registered response and notification handlers
         """
         try:
-            while self.process and self.process.stdout and not self.process.stdout.at_eof():
+            while not self._received_shutdown:
+                if not self.process or not self.process.stdout or self.process.stdout.at_eof():
+                    break
+                
                 line = await self.process.stdout.readline()
                 if not line:
                     continue
+                
                 try:
                     num_bytes = content_length(line)
                 except ValueError:
                     continue
                 if num_bytes is None:
                     continue
+                
                 while line and line.strip():
                     line = await self.process.stdout.readline()
                 if not line:
                     continue
+                
                 body = await self.process.stdout.readexactly(num_bytes)
-
-                self.tasks[self.task_counter] = asyncio.get_event_loop().create_task(self._handle_body(body))
-                self.task_counter += 1
+                await self._create_task(self._handle_body(body))
+                
         except (BrokenPipeError, ConnectionResetError, StopLoopException):
             pass
         return self._received_shutdown
@@ -363,9 +383,11 @@ class LanguageServerHandler:
         Send request to the server, register the request id, and wait for the response
         """
         request = Request()
-        request_id = self.request_id
-        self.request_id += 1
-        self._response_handlers[request_id] = request
+        async with self._response_handlers_lock:
+            request_id = self.request_id
+            self.request_id += 1
+            self._response_handlers[request_id] = request
+            
         async with request.cv:
             await self._send_payload(make_request(method, request_id, params))
             await request.cv.wait()
@@ -412,7 +434,11 @@ class LanguageServerHandler:
         """
         Handle the response received from the server for a request, using the id to determine the request
         """
-        request = self._response_handlers.pop(response["id"])
+        async with self._response_handlers_lock:
+            if response["id"] not in self._response_handlers:
+                return
+            request = self._response_handlers.pop(response["id"])
+            
         if "result" in response and "error" not in response:
             await request.on_result(response["result"])
         elif "result" not in response and "error" in response:
