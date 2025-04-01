@@ -478,7 +478,7 @@ initialize_parameters = {
                         "java": {
                             "home": None
                         },
-                        "vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=True -Xmx1G -Xms100m -Xlog:disable",
+                        "vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=True -Xmx4G -Xms1G -Xlog:disable",
                         "lombokSupport": {
                             "enabled": True
                         },
