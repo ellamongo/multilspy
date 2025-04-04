@@ -309,7 +309,8 @@ class EclipseJDTLS(LanguageServer):
 
             # TODO: Add comments about why we wait here, and how this can be optimized
             await self.service_ready_event.wait()
-
+            # TODO: magic sleep to make sure server start before we start sending requests, proper debug needed
+            await asyncio.sleep(3)
             yield self
 
             await self.server.shutdown()
