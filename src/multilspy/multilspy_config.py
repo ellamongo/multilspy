@@ -31,6 +31,7 @@ class JavaServerConfig:
     jdtls_config_path: str
     lombok_jar_path: str
     gradle_path: str
+    is_standalone_mode: bool = False
 
 
     @classmethod

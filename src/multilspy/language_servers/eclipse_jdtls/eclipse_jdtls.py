@@ -51,6 +51,7 @@ class EclipseJDTLS(LanguageServer):
 
         runtime_dependency_paths = self.setupRuntimeDependencies(logger, config)
         self.runtime_dependency_paths = runtime_dependency_paths
+        self.is_standalone_mode = config.java_server_config.is_standalone_mode
 
         # ws_dir is the workspace directory for the EclipseJDTLS server
         ws_dir = str(
@@ -171,7 +172,7 @@ class EclipseJDTLS(LanguageServer):
             jdtls_readonly_config_path=jdtls_readonly_config_path,
         )
 
-    def _get_initialize_params(self, repository_absolute_path: str) -> InitializeParams:
+    def _get_initialize_params(self, repository_absolute_path: str, is_standalone_mode: bool) -> InitializeParams:
         """
         Returns the initialize parameters for the EclipseJDTLS server.
         """
@@ -227,6 +228,11 @@ class EclipseJDTLS(LanguageServer):
         d["initializationOptions"]["settings"]["java"]["import"]["gradle"]["java"][
             "home"
         ] = self.runtime_dependency_paths.jre_path
+
+        if is_standalone_mode:
+            d["initializationOptions"]["settings"]["java"]["project"]["importOnFirstTimeStartup"] = "disabled"
+        else:
+            d["initializationOptions"]["settings"]["java"]["project"]["importOnFirstTimeStartup"] = "automatic"
 
         return d
 
@@ -290,7 +296,7 @@ class EclipseJDTLS(LanguageServer):
         async with super().start_server():
             self.logger.log("Starting EclipseJDTLS server process", logging.INFO)
             await self.server.start()
-            initialize_params = self._get_initialize_params(self.repository_root_path)
+            initialize_params = self._get_initialize_params(self.repository_root_path, self.is_standalone_mode)
 
             self.logger.log(
                 "Sending initialize request from LSP client to LSP server and awaiting response",
@@ -309,8 +315,7 @@ class EclipseJDTLS(LanguageServer):
 
             # TODO: Add comments about why we wait here, and how this can be optimized
             await self.service_ready_event.wait()
-            # TODO: magic sleep to make sure server start before we start sending requests, proper debug needed
-            await asyncio.sleep(3)
+
             yield self
 
             await self.server.shutdown()
