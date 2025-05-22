@@ -507,3 +507,66 @@ async def test_multilspy_java_example_repo_prepare_and_incoming_call_hierarchy()
 
             assert len(incoming_call_dep_two) == 1
             assert incoming_call_dep_two[0]['name'] == 'flushToClickHouse(ClickHouseSinkRequest, CompletableFuture<Boolean>) : void'
+
+@pytest.mark.asyncio
+async def test_multilspy_java_example_repo_prepare_and_outgoing_call_hierarchy() -> None:
+    """
+    Test the working of textDocument/callHierarchy with Java repository - clickhouse-highlevel-sinker
+    """
+    code_language = Language.JAVA
+    params = {
+        "code_language": code_language,
+        "repo_url": "https://github.com/LakshyAAAgrawal/clickhouse-highlevel-sinker/",
+        "repo_commit": "5775fd7a67e7b60998e1614cf44a8a1fc3190ab0",
+        "java_server_config": java_server_config["java_server_config"]
+    }
+
+    with create_test_context(params) as context:
+        lsp = LanguageServer.create(context.config, context.logger, context.source_directory)
+        # All the communication with the language server must be performed inside the context manager
+        # The server process is started when the context manager is entered and is terminated when the context manager is exited.
+        # The context manager is an asynchronous context manager, so it must be used with async with.
+        async with lsp.start_server():
+            filepath = str(PurePath("src/main/java/com/xlvchao/clickhouse/model/ClickHouseSinkRequest.java"))
+
+            # prepare call hierarchy by resolve request method position to CallHierarchyItem
+            result = await lsp.request_prepare_call_hierarchy(filepath, 69, 37)
+
+            assert len(result) == 1
+            # method package and class name
+            assert result[0]['detail'] == 'com.xlvchao.clickhouse.model.ClickHouseSinkRequest$Builder'
+            # method signature
+            assert result[0]['name'] == 'build() : ClickHouseSinkRequest'
+            # method file uri
+            assert result[0]['uri'].endswith('src/main/java/com/xlvchao/clickhouse/model/ClickHouseSinkRequest.java')
+            # range of the method definition includes method signature and body
+            assert result[0]['range'] == {
+                'start': {'line': 69, 'character': 8},
+                'end': {'line': 71, 'character': 9}
+            }
+            # selection range includes the method name
+            assert result[0]['selectionRange'] == {
+                'start': {'line': 69, 'character': 37},
+                'end': {'line': 69, 'character': 42}
+            }
+
+            # get outgoing call hierarchy for the resolved method(only one depth)
+            outgoing_call_dep_one = await lsp.request_outgoing_calls(result[0])
+
+            assert len(outgoing_call_dep_one) == 1
+            # called method is defined in ClickHouseSinkRequest
+            assert outgoing_call_dep_one[0]['detail'] == 'com.xlvchao.clickhouse.model.ClickHouseSinkRequest'
+            # called method signature
+            assert outgoing_call_dep_one[0]['name'] == 'ClickHouseSinkRequest(List<Object>, Class, Exception)'
+            # called method file uri
+            assert outgoing_call_dep_one[0]['uri'].endswith('src/main/java/com/xlvchao/clickhouse/model/ClickHouseSinkRequest.java')
+            # range of the called method definition includes method signature and body
+            assert outgoing_call_dep_one[0]['range'] == {
+                'start': {'line': 11, 'character': 4},
+                'end': {'line': 16, 'character': 5}
+            }
+            # selection range where the method is being called within the caller method
+            assert outgoing_call_dep_one[0]['selectionRange'] == {
+                'start': {'line': 11, 'character': 11},
+                'end': {'line': 11, 'character': 32}
+            }

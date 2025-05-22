@@ -671,6 +671,24 @@ class LanguageServer:
 
         return [multilspy_types.CallHierarchyItem(**item["from"]) for item in incoming_call_response]
 
+    async def request_outgoing_calls(self, req_call_item: multilspy_types.CallHierarchyItem) -> List[multilspy_types.CallHierarchyItem]:
+        """
+        Request outgoing calls for a given call hierarchy item.
+
+        :param req_call_item: The call hierarchy item to get outgoing calls for.
+        :return: A list of call hierarchy items representing the outgoing calls.
+        """
+        outgoing_call_response = await self.server.send.outgoing_calls(
+            {
+                "item": req_call_item,
+            }
+        )
+
+        if outgoing_call_response is None:
+            return []
+
+        return [multilspy_types.CallHierarchyItem(**item["to"]) for item in outgoing_call_response]
+
 
 @ensure_all_methods_implemented(LanguageServer)
 class SyncLanguageServer:
@@ -869,5 +887,17 @@ class SyncLanguageServer:
         """
         result = asyncio.run_coroutine_threadsafe(
             self.language_server.request_incoming_calls(req_call_item), self.loop
+        ).result()
+        return result
+
+    def request_outgoing_calls(self, req_call_item: multilspy_types.CallHierarchyItem) -> List[multilspy_types.CallHierarchyItem]:
+        """
+        Request outgoing calls for a given call hierarchy item.
+
+        :param req_call_item: The call hierarchy item to get outgoing calls for.
+        :return: A list of call hierarchy items representing the outgoing calls.
+        """
+        result = asyncio.run_coroutine_threadsafe(
+            self.language_server.request_outgoing_calls(req_call_item), self.loop
         ).result()
         return result
